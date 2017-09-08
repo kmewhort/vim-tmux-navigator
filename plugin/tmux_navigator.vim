@@ -95,7 +95,13 @@ function! s:TmuxAwareNavigate(direction)
       endtry
     endif
     let args = 'select-pane -t ' . shellescape($TMUX_PANE) . ' -' . tr(a:direction, 'phjkl', 'lLDUR')
+
     silent call s:TmuxCommand(args)
+    
+    if exists('g:tmux_command_on_switch')
+      call s:TmuxCommand(g:tmux_command_on_switch)
+    endif
+
     if s:NeedsVitalityRedraw()
       redraw!
     endif
